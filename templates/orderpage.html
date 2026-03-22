@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DonkeyDoner - Order Confirmation</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+	--green: #008A2D;
+	--yellow: #F9D33A;
+	--dark: #1a1a1a;
+	--light: #fff;
+	--gray: #f4f4f4;
+	--red: #e53935;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+	font-family: 'Nunito', sans-serif;
+	background: var(--gray);
+	color: var(--dark);
+	min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+	background: var(--dark);
+	padding: 14px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 4px solid var(--yellow);
+	animation: navIn 0.5s ease both;
+}
+
+@keyframes navIn {
+	from { transform: translateY(-60px); opacity: 0; }
+	to   { transform: translateY(0); opacity: 1; }
+}
+
+.nav-logo {
+	font-family: 'Oswald', sans-serif;
+	font-size: 26px;
+	font-weight: 700;
+	text-decoration: none;
+	letter-spacing: 2px;
+}
+
+.logo-cat   { color: var(--yellow); }
+.logo-doner { color: var(--green); }
+
+/* ── LAYOUT ── */
+.page-wrap {
+	max-width: 780px;
+	margin: 46px auto;
+	padding: 0 20px 60px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* ── PAGE TITLE ── */
+.page-title {
+	text-align: center;
+	font-family: 'Oswald', sans-serif;
+	font-size: 2.2rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--green);
+	animation: fadeDown 0.6s ease both;
+}
+
+.page-title span {
+	display: block;
+	font-size: 0.9rem;
+	font-family: 'Nunito', sans-serif;
+	font-weight: 600;
+	color: #aaa;
+	letter-spacing: 2px;
+	margin-top: 4px;
+}
+
+@keyframes fadeDown {
+	from { transform: translateY(-20px); opacity: 0; }
+	to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SECTION BOXES ── */
+.box {
+	background: var(--light);
+	border-radius: 16px;
+	padding: 26px;
+	box-shadow: 0 6px 28px rgba(0,0,0,0.07);
+	position: relative;
+	overflow: hidden;
+	animation: boxIn 0.5s ease both;
+}
+
+.box::before {
+	content: '';
+	position: absolute;
+	top: 0; left: 0; right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--green), var(--yellow));
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.5s ease;
+}
+
+.box:hover::before { transform: scaleX(1); }
+
+.box:nth-child(2) { animation-delay: 0.1s; }
+.box:nth-child(3) { animation-delay: 0.2s; }
+.box:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes boxIn {
+	from { transform: translateY(30px); opacity: 0; }
+	to   { transform: translateY(0); opacity: 1; }
+}
+
+.box-title {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.1rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: var(--green);
+	margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.box-title::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: #eee;
+}
+
+/* ── INPUTS ── */
+.input-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+@media (max-width: 500px) { .input-grid { grid-template-columns: 1fr; } }
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.field label {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #999;
+}
+
+.field input {
+	width: 100%;
+	padding: 11px 14px;
+	border: 2px solid #e8e8e8;
+	border-radius: 10px;
+	font-family: 'Nunito', sans-serif;
+	font-size: 14px;
+	color: var(--dark);
+	background: var(--gray);
+	transition: border-color 0.25s, box-shadow 0.25s, background 0.25s, transform 0.2s;
+	outline: none;
+}
+
+.field input:focus {
+	border-color: var(--green);
+	background: var(--light);
+	box-shadow: 0 0 0 4px rgba(0,138,45,0.1);
+	transform: translateY(-1px);
+}
+
+.field input::placeholder { color: #bbb; }
+
+/* ── CART ITEMS ── */
+#items {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#items li {
+	background: var(--gray);
+	padding: 10px 14px;
+	border-radius: 10px;
+	font-size: 14px;
+	color: #555;
+	border-left: 3px solid var(--green);
+	animation: slideIn 0.3s ease both;
+}
+
+@keyframes slideIn {
+	from { transform: translateX(-15px); opacity: 0; }
+	to   { transform: translateX(0); opacity: 1; }
+}
+
+/* ── TOTAL ── */
+.total-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.total-label {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #888;
+}
+
+.total-amount {
+	font-family: 'Oswald', sans-serif;
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--green);
+}
+
+/* ── BUTTONS ── */
+.confirm-btn {
+	width: 100%;
+	padding: 16px;
+	background: var(--yellow);
+	color: var(--dark);
+	border: none;
+	border-radius: 12px;
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.1rem;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	cursor: pointer;
+	box-shadow: 0 5px 0 #c9a800;
+	position: relative;
+	overflow: hidden;
+	transition: background 0.3s, transform 0.2s, box-shadow 0.2s, color 0.3s;
+	animation: boxIn 0.5s 0.4s ease both;
+}
+
+.confirm-btn::before {
+	content: '';
+	position: absolute;
+	top: 0; left: -100%;
+	width: 60%;
+	height: 100%;
+	background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+	transition: left 0.5s ease;
+}
+
+.confirm-btn:hover::before { left: 150%; }
+
+.confirm-btn:hover {
+	background: var(--green);
+	color: var(--light);
+	transform: translateY(-3px);
+	box-shadow: 0 8px 0 #005c1e;
+}
+
+.confirm-btn:active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 0 #c9a800;
+}
+
+.back-btn {
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
+	padding: 10px 26px;
+	background: transparent;
+	color: #999;
+	border: 2px solid #ddd;
+	border-radius: 10px;
+	font-family: 'Nunito', sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: border-color 0.3s, color 0.3s, transform 0.2s;
+	animation: boxIn 0.5s 0.5s ease both;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.back-btn:hover {
+	border-color: var(--dark);
+	color: var(--dark);
+	transform: translateY(-2px);
+}
+
+/* ── CARD ROW ── */
+.card-field {
+	margin-top: 12px;
+}
+
+.card-field .field input {
+	font-family: 'Courier New', monospace;
+	letter-spacing: 2px;
+	font-size: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+	<a href="/" class="nav-logo">
+		<span class="logo-cat">Donkey</span><span class="logo-doner">DonEr</span>
+	</a>
+</nav>
+
+<div class="page-wrap">
+
+	<h1 class="page-title">Confirm Your Order <span>Almost there — fill in the details</span></h1>
+
+	<!-- INFO -->
+	<div class="box">
+		<p class="box-title">👤 Your Info</p>
+		<div class="input-grid">
+			<div class="field">
+				<label>Full Name</label>
+				<input id="name" placeholder="John Smith">
+			</div>
+			<div class="field">
+				<label>Phone</label>
+				<input id="phone" placeholder="+1 234 567 8900">
+			</div>
+			<div class="field">
+				<label>Email</label>
+				<input id="email" placeholder="you@example.com" type="email">
+			</div>
+			<div class="field">
+				<label>Delivery Address</label>
+				<input id="address" placeholder="123 Main St, City">
+			</div>
+		</div>
+		<div class="card-field field">
+			<label>Card Number</label>
+			<input id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+		</div>
+	</div>
+
+	<!-- CART -->
+	<div class="box">
+		<p class="box-title">🛒 Cart Items</p>
+		<ul id="items"></ul>
+	</div>
+
+	<!-- TOTAL -->
+	<div class="box">
+		<div class="total-row">
+			<span class="total-label">Order Total</span>
+			<span class="total-amount" id="total">$0</span>
+		</div>
+	</div>
+
+	<button class="confirm-btn" onclick="confirmOrder()">✔ Place Order</button>
+	<button class="back-btn" onclick="window.location.href='/order'">← Back to Menu</button>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const saved = JSON.parse(localStorage.getItem("orderData")) || { items: [], total: 0 };
+
+	if (saved.name)    document.getElementById("name").value    = saved.name;
+	if (saved.phone)   document.getElementById("phone").value   = saved.phone;
+	if (saved.email)   document.getElementById("email").value   = saved.email;
+	if (saved.address) document.getElementById("address").value = saved.address;
+
+	let items = [];
+	try {
+		items = typeof saved.items === "string" ? JSON.parse(saved.items) : saved.items;
+	} catch(e) {
+		items = saved.items ? [saved.items] : [];
+	}
+
+	const list = document.getElementById("items");
+	(items || []).forEach((i, idx) => {
+		let li = document.createElement("li");
+		li.textContent = i;
+		li.style.animationDelay = (idx * 0.07) + "s";
+		list.appendChild(li);
+	});
+
+	document.getElementById("total").textContent = "$" + (saved.total || 0);
+
+	// Card number formatting
+	document.getElementById("cardNumber").addEventListener("input", function(e) {
+		let v = e.target.value.replace(/\D/g, '').substring(0, 16);
+		e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+	});
+});
+
+function confirmOrder() {
+	const name       = document.getElementById("name").value;
+	const phone      = document.getElementById("phone").value;
+	const email      = document.getElementById("email").value;
+	const address    = document.getElementById("address").value;
+	const cardNumber = document.getElementById("cardNumber").value;
+
+	if (!name || !phone || !email || !address || !cardNumber) {
+		alert("Please fill all fields!");
+		return;
+	}
+
+	const saved = JSON.parse(localStorage.getItem("orderData")) || {};
+
+	fetch("/save-order", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ name, phone, email, address, cardNumber, items: saved.items, total: saved.total })
+	})
+	.then(res => res.json())
+	.then(() => {
+		alert("🎉 Order placed successfully!");
+		window.location.href = "/";
+	});
+}
+</script>
+
+</body>
+</html>
