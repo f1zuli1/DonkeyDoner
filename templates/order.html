@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DonkeyDoner - Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+	--green: #008A2D;
+	--yellow: #F9D33A;
+	--dark: #1a1a1a;
+	--light: #fff;
+	--gray: #f4f4f4;
+	--shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+	font-family: 'Nunito', sans-serif;
+	background: var(--gray);
+	color: var(--dark);
+	min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+	background: var(--dark);
+	padding: 14px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	border-bottom: 4px solid var(--yellow);
+	animation: navIn 0.5s ease both;
+}
+
+@keyframes navIn {
+	from { transform: translateY(-60px); opacity: 0; }
+	to   { transform: translateY(0);     opacity: 1; }
+}
+
+.nav-logo {
+	font-family: 'Oswald', sans-serif;
+	font-size: 26px;
+	font-weight: 700;
+	text-decoration: none;
+	letter-spacing: 2px;
+}
+
+.logo-cat   { color: var(--yellow); }
+.logo-doner { color: var(--green); }
+
+.nav-links { display: flex; gap: 14px; align-items: center; }
+
+nav a.nav-link {
+	color: #ccc;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	transition: color 0.3s;
+}
+
+nav a.nav-link:hover { color: var(--yellow); }
+
+.nav-links a.order-btn,
+.nav-links a.history-btn,
+.nav-links button.history-btn {
+	background: var(--yellow);
+	color: var(--green);
+	padding: 8px 18px;
+	border-radius: 6px;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 1px;
+	text-decoration: none;
+	border: none;
+	cursor: pointer;
+	transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.nav-links a.order-btn:hover,
+.nav-links a.history-btn:hover,
+.nav-links button.history-btn:hover {
+	background: var(--green);
+	color: var(--light);
+	transform: translateY(-2px);
+}
+
+/* ── CONTAINER ── */
+.container {
+	max-width: 1060px;
+	margin: 40px auto;
+	padding: 0 20px 60px;
+}
+
+.page-title {
+	font-family: 'Oswald', sans-serif;
+	font-size: 2.4rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--green);
+	text-align: center;
+	margin-bottom: 6px;
+	animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.page-sub {
+	text-align: center;
+	color: #888;
+	font-size: 14px;
+	margin-bottom: 36px;
+	animation: fadeUp 0.6s 0.3s ease both;
+}
+
+@keyframes fadeUp {
+	from { transform: translateY(24px); opacity: 0; }
+	to   { transform: translateY(0);    opacity: 1; }
+}
+
+.section-label {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: #888;
+	margin-bottom: 16px;
+	padding-left: 12px;
+	border-left: 4px solid var(--yellow);
+	animation: fadeUp 0.6s 0.35s ease both;
+}
+
+/* ── MENU GRID ── */
+.menu {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	gap: 22px;
+	margin-bottom: 36px;
+}
+
+/* ── CARD ── */
+.card {
+	background: var(--light);
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	position: relative;
+	transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s;
+	animation: cardIn 0.6s ease both;
+	display: flex;
+	flex-direction: column;
+}
+
+.card::before {
+	content: '';
+	position: absolute;
+	top: 0; left: 0; right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--green), var(--yellow));
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.4s ease;
+	z-index: 2;
+}
+
+.card:hover::before { transform: scaleX(1); }
+.card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+.card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes cardIn {
+	from { transform: translateY(40px); opacity: 0; }
+	to   { transform: translateY(0);    opacity: 1; }
+}
+
+.card-img-wrap {
+	overflow: hidden;
+	height: 160px;
+	position: relative;
+	background: #eee;
+	flex-shrink: 0;
+}
+
+.card-img {
+	width: 100%;
+	height: 160px;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.5s ease;
+}
+
+.card:hover .card-img { transform: scale(1.06); }
+
+.card-img-wrap::after {
+	content: '';
+	position: absolute;
+	bottom: 0; left: 0; right: 0;
+	height: 50px;
+	background: linear-gradient(transparent, rgba(255,255,255,0.9));
+}
+
+.card-body {
+	padding: 16px 20px 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.card h3 {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: var(--dark);
+}
+
+.price-tag {
+	background: var(--yellow);
+	color: var(--dark);
+	font-family: 'Oswald', sans-serif;
+	font-weight: 700;
+	font-size: 13px;
+	padding: 4px 10px;
+	border-radius: 100px;
+}
+
+.option-section { margin-bottom: 12px; }
+
+.option-section-label {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #999;
+	margin-bottom: 7px;
+}
+
+.options { display: flex; flex-direction: column; gap: 5px; }
+
+.options label {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-size: 13px;
+	color: #555;
+	cursor: pointer;
+	padding: 5px 8px;
+	border-radius: 8px;
+	transition: background 0.2s, color 0.2s;
+}
+
+.options label:hover { background: var(--gray); color: var(--dark); }
+
+.options input[type="checkbox"] {
+	accent-color: var(--green);
+	width: 15px; height: 15px;
+	cursor: pointer;
+}
+
+.size-btns { display: flex; gap: 8px; }
+
+.size-btn {
+	flex: 1;
+	padding: 8px 0;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	background: var(--light);
+	font-family: 'Oswald', sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	color: #888;
+	cursor: pointer;
+	transition: all 0.2s;
+	text-align: center;
+}
+
+.size-btn:hover { border-color: var(--green); color: var(--green); }
+
+.size-btn.selected {
+	border-color: var(--green);
+	background: var(--green);
+	color: #fff;
+}
+
+.qty-row {
+	display: flex;
+	align-items: center;
+	background: var(--gray);
+	border-radius: 10px;
+	overflow: hidden;
+	width: fit-content;
+}
+
+.qty-btn {
+	width: 36px; height: 36px;
+	border: none;
+	background: transparent;
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--green);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s;
+}
+
+.qty-btn:hover { background: #e0e0e0; }
+
+.qty-display {
+	min-width: 36px;
+	text-align: center;
+	font-family: 'Oswald', sans-serif;
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--dark);
+}
+
+.card button.add-btn {
+	width: 100%;
+	padding: 11px;
+	background: var(--green);
+	color: var(--light);
+	border: none;
+	border-radius: 10px;
+	font-family: 'Oswald', sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	cursor: pointer;
+	transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+	box-shadow: 0 4px 0 #005c1e;
+	margin-top: auto;
+}
+
+.card button.add-btn:hover {
+	background: var(--dark);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 0 #000;
+}
+
+.card button.add-btn:active {
+	transform: translateY(2px);
+	box-shadow: 0 1px 0 #005c1e;
+}
+
+/* ── CART ── */
+.cart {
+	background: var(--light);
+	border-radius: 16px;
+	padding: 24px;
+	box-shadow: var(--shadow);
+	border-left: 5px solid var(--green);
+	animation: fadeUp 0.6s 0.5s ease both;
+}
+
+.cart h3 {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.3rem;
+	color: var(--green);
+	margin-bottom: 14px;
+	letter-spacing: 1px;
+}
+
+#cart-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 30px;
+}
+
+#cart-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: var(--gray);
+	padding: 10px 14px;
+	border-radius: 10px;
+	font-size: 14px;
+	animation: slideIn 0.3s ease both;
+	transition: background 0.2s;
+}
+
+#cart-list li:hover { background: #e8e8e8; }
+
+@keyframes slideIn {
+	from { transform: translateX(-20px); opacity: 0; }
+	to   { transform: translateX(0);     opacity: 1; }
+}
+
+#cart-list li button {
+	background: #ff4444;
+	color: white;
+	border: none;
+	border-radius: 6px;
+	padding: 4px 10px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s;
+	flex-shrink: 0;
+	margin-left: 10px;
+}
+
+#cart-list li button:hover { background: #cc0000; transform: scale(1.1); }
+
+.cart-total {
+	margin-top: 14px;
+	font-size: 1.1rem;
+	font-family: 'Oswald', sans-serif;
+	color: var(--dark);
+	padding-top: 14px;
+	border-top: 2px dashed #ddd;
+}
+
+.cart-total span { color: var(--green); font-size: 1.4rem; }
+
+.checkout-btn {
+	margin-top: 16px;
+	width: 100%;
+	padding: 15px;
+	background: var(--yellow);
+	color: var(--dark);
+	border: none;
+	border-radius: 10px;
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.05rem;
+	font-weight: 700;
+	letter-spacing: 2px;
+	cursor: pointer;
+	box-shadow: 0 5px 0 #c9a800;
+	transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+	text-transform: uppercase;
+	position: relative;
+	overflow: hidden;
+}
+
+.checkout-btn::before {
+	content: '';
+	position: absolute;
+	top: 0; left: -100%;
+	width: 60%;
+	height: 100%;
+	background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+	transition: left 0.5s ease;
+}
+
+.checkout-btn:hover::before { left: 150%; }
+
+.checkout-btn:hover {
+	background: var(--green);
+	color: var(--light);
+	transform: translateY(-3px);
+	box-shadow: 0 8px 0 #005c1e;
+}
+
+.checkout-btn:active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 0 #c9a800;
+}
+
+/* ── SIDE PANEL ── */
+.panel-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0);
+	pointer-events: none;
+	transition: background 0.4s ease;
+	z-index: 1999;
+}
+
+.panel-overlay.active {
+	background: rgba(0,0,0,0.35);
+	pointer-events: all;
+}
+
+.side-panel {
+	position: fixed;
+	top: 0; right: -380px;
+	width: 360px;
+	height: 100%;
+	background: var(--dark);
+	box-shadow: -8px 0 50px rgba(0,0,0,0.35);
+	transition: right 0.45s cubic-bezier(.22,1,.36,1);
+	z-index: 2000;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.side-panel.active { right: 0; }
+
+.side-panel::before {
+	content: '';
+	position: absolute;
+	top: 0; left: 0; right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--green), var(--yellow), var(--green));
+	background-size: 200% 100%;
+	animation: gradientShift 3s linear infinite;
+}
+
+@keyframes gradientShift {
+	0%   { background-position: 0% 0%; }
+	100% { background-position: 200% 0%; }
+}
+
+.panel-header {
+	padding: 28px 24px 20px;
+	border-bottom: 1px solid rgba(255,255,255,0.07);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-shrink: 0;
+	gap: 10px;
+}
+
+.panel-header h2 {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.3rem;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--light);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+}
+
+.panel-header h2::before { content: '🕐'; font-size: 1.1rem; }
+
+.panel-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.close-btn {
+	width: 34px; height: 34px;
+	display: flex; align-items: center; justify-content: center;
+	font-size: 22px;
+	cursor: pointer;
+	color: #666;
+	border: 1px solid #333;
+	border-radius: 8px;
+	background: rgba(255,255,255,0.04);
+	transition: color 0.2s, background 0.2s, transform 0.25s, border-color 0.2s;
+	line-height: 1;
+	user-select: none;
+}
+
+.close-btn:hover {
+	color: var(--light);
+	background: rgba(255,255,255,0.1);
+	border-color: #555;
+	transform: rotate(90deg);
+}
+
+.clear-all-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 7px 12px;
+	background: transparent;
+	color: #ff5555;
+	border: 1px solid rgba(255,85,85,0.5);
+	border-radius: 8px;
+	cursor: pointer;
+	font-family: 'Oswald', sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+	white-space: nowrap;
+}
+
+.clear-all-btn:hover {
+	background: #ff5555;
+	color: #fff;
+	border-color: #ff5555;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 14px rgba(255,85,85,0.35);
+}
+
+.panel-body {
+	flex: 1;
+	overflow-y: auto;
+	padding: 16px 20px 24px;
+	scrollbar-width: thin;
+	scrollbar-color: #333 transparent;
+}
+
+#orderList { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+#orderList li {
+	background: rgba(255,255,255,0.05);
+	border: 1px solid rgba(255,255,255,0.07);
+	border-radius: 14px;
+	padding: 16px 16px 14px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: #bbb;
+	position: relative;
+	overflow: hidden;
+	animation: panelCardIn 0.35s ease both;
+	transition: background 0.25s, border-color 0.25s, transform 0.25s;
+}
+
+#orderList li:hover {
+	background: rgba(255,255,255,0.08);
+	border-color: rgba(249,211,58,0.25);
+	transform: translateX(-3px);
+}
+
+#orderList li::before {
+	content: '';
+	position: absolute;
+	left: 0; top: 0; bottom: 0;
+	width: 3px;
+	background: linear-gradient(180deg, var(--green), var(--yellow));
+	border-radius: 3px 0 0 3px;
+}
+
+@keyframes panelCardIn {
+	from { transform: translateX(20px); opacity: 0; }
+	to   { transform: translateX(0);    opacity: 1; }
+}
+
+.order-meta  { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#555; margin-bottom:6px; }
+.order-items { color:#ddd; font-weight:600; margin-bottom:4px; }
+.order-total { color:var(--yellow); font-family:'Oswald',sans-serif; font-size:1rem; font-weight:700; }
+</style>
+</head>
+
+<body>
+
+<nav>
+	<a href="/home" class="nav-logo">
+		<span class="logo-cat">DONKEY</span><span class="logo-doner">DONER</span>
+	</a>
+	<div class="nav-links">
+		<a href="/home" class="nav-link">Home</a>
+		<a href="/order" class="order-btn">ORDER</a>
+		<!-- FIX: use <button> so onclick works without href -->
+		<button class="history-btn" onclick="openHistory()">History</button>
+	</div>
+</nav>
+
+<div class="panel-overlay" id="panelOverlay" onclick="closeHistory()"></div>
+<div id="sidePanel" class="side-panel">
+	<div class="panel-header">
+		<h2>Order History</h2>
+		<div class="panel-header-actions">
+			<button class="clear-all-btn" onclick="clearAllOrders()" title="Clear all history">🗑 Clear All</button>
+			<span class="close-btn" onclick="closeHistory()">×</span>
+		</div>
+	</div>
+	<div class="panel-body">
+		<ul id="orderList"></ul>
+	</div>
+</div>
+
+<div class="container">
+	<h2 class="page-title">Build Your Order</h2>
+	<p class="page-sub">Pick your base, choose your toppings, enjoy.</p>
+
+	<!-- ───── DÖNER ───── -->
+	<div class="section-label">🥙 Doner &amp; Saurma</div>
+	<div class="menu">
+
+		<!-- Chicken Doner -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/chicken-doner.jpg" alt="Chicken Doner"
+				onerror="this.parentElement.style.background='linear-gradient(135deg,#fce4ec,#f8bbd0)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>Chicken Doner</h3>
+					<span class="price-tag">$5</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Toppings</div>
+					<div class="options">
+						<label><input type="checkbox" value="Chicken" checked> 🍗 Chicken</label>
+						<label><input type="checkbox" value="Tomato"> 🍅 Tomato</label>
+						<label><input type="checkbox" value="Cucumber"> 🥒 Cucumber</label>
+						<label><input type="checkbox" value="Onion"> 🧅 Onion</label>
+						<label><input type="checkbox" value="Sauce"> 🥫 Sauce</label>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="chicken-doner-sizes">
+						<button class="size-btn selected" data-size="Regular" data-extra="0" onclick="selectSize(this,'chicken-doner-sizes')">Regular</button>
+						<button class="size-btn" data-size="Large" data-extra="2" onclick="selectSize(this,'chicken-doner-sizes')">Large (+$2)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addFood(this,'Chicken Doner',5)">+ Add to Order</button>
+			</div>
+		</div>
+
+		<!-- Beef Doner -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/beef-doner.jpg" alt="Beef Doner"
+				     onerror="this.parentElement.style.background='linear-gradient(135deg,#fbe9e7,#ffccbc)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>Beef Doner</h3>
+					<span class="price-tag">$6</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Toppings</div>
+					<div class="options">
+						<label><input type="checkbox" value="Beef" checked> 🥩 Beef</label>
+						<label><input type="checkbox" value="Tomato"> 🍅 Tomato</label>
+						<label><input type="checkbox" value="Cucumber"> 🥒 Cucumber</label>
+						<label><input type="checkbox" value="Onion"> 🧅 Onion</label>
+						<label><input type="checkbox" value="Sauce"> 🥫 Sauce</label>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="beef-doner-sizes">
+						<button class="size-btn selected" data-size="Regular" data-extra="0" onclick="selectSize(this,'beef-doner-sizes')">Regular</button>
+						<button class="size-btn" data-size="Large" data-extra="2" onclick="selectSize(this,'beef-doner-sizes')">Large (+$2)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addFood(this,'Beef Doner',6)">+ Add to Order</button>
+			</div>
+		</div>
+
+		<!-- Chicken Saurma -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/chicken-shawarma.jpg" alt="Chicken Saurma"
+				     onerror="this.parentElement.style.background='linear-gradient(135deg,#fff9c4,#fff176)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>Chicken Saurma</h3>
+					<span class="price-tag">$6</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Toppings</div>
+					<div class="options">
+						<label><input type="checkbox" value="Chicken" checked> 🍗 Chicken</label>
+						<label><input type="checkbox" value="Tomato"> 🍅 Tomato</label>
+						<label><input type="checkbox" value="Cucumber"> 🥒 Cucumber</label>
+						<label><input type="checkbox" value="Onion"> 🧅 Onion</label>
+						<label><input type="checkbox" value="Sauce"> 🥫 Sauce</label>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="chicken-saurma-sizes">
+						<button class="size-btn selected" data-size="Regular" data-extra="0" onclick="selectSize(this,'chicken-saurma-sizes')">Regular</button>
+						<button class="size-btn" data-size="Large" data-extra="2" onclick="selectSize(this,'chicken-saurma-sizes')">Large (+$2)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addFood(this,'Chicken Saurma',6)">+ Add to Order</button>
+			</div>
+		</div>
+
+		<!-- Beef Saurma -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/beef-shawarma.jpg" alt="Beef Saurma"
+				     onerror="this.parentElement.style.background='linear-gradient(135deg,#efebe9,#d7ccc8)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>Beef Saurma</h3>
+					<span class="price-tag">$7</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Toppings</div>
+					<div class="options">
+						<label><input type="checkbox" value="Beef" checked> 🥩 Beef</label>
+						<label><input type="checkbox" value="Tomato"> 🍅 Tomato</label>
+						<label><input type="checkbox" value="Cucumber"> 🥒 Cucumber</label>
+						<label><input type="checkbox" value="Onion"> 🧅 Onion</label>
+						<label><input type="checkbox" value="Sauce"> 🥫 Sauce</label>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="beef-saurma-sizes">
+						<button class="size-btn selected" data-size="Regular" data-extra="0" onclick="selectSize(this,'beef-saurma-sizes')">Regular</button>
+						<button class="size-btn" data-size="Large" data-extra="2" onclick="selectSize(this,'beef-saurma-sizes')">Large (+$2)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addFood(this,'Beef Saurma',7)">+ Add to Order</button>
+			</div>
+		</div>
+
+	</div><!-- /menu döner -->
+
+	<!-- ───── DRINKS ───── -->
+	<div class="section-label">🥤 Drinks</div>
+	<div class="menu">
+
+		<!-- Ayran -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/Ayran.jpg" alt="Ayran"
+				     onerror="this.parentElement.style.background='linear-gradient(135deg,#e3f2fd,#bbdefb)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>Ayran</h3>
+					<span class="price-tag">$2</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="ayran-sizes">
+						<button class="size-btn selected" data-size="Small" data-extra="0" onclick="selectSize(this,'ayran-sizes')">Small</button>
+						<button class="size-btn" data-size="Large" data-extra="1" onclick="selectSize(this,'ayran-sizes')">Large (+$1)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addDrink(this,'Ayran',2)">+ Add to Order</button>
+			</div>
+		</div>
+
+		<!-- CocaCola -->
+		<div class="card">
+			<div class="card-img-wrap">
+				<img class="card-img" src="../static/img/CocoCola.jpg" alt="CocaCola"
+				onerror="this.parentElement.style.background='linear-gradient(135deg,#ffebee,#ffcdd2)';this.style.display='none'">
+			</div>
+			<div class="card-body">
+				<div class="card-header">
+					<h3>CocaCola</h3>
+					<span class="price-tag">$3</span>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Size</div>
+					<div class="size-btns" id="cola-sizes">
+						<button class="size-btn selected" data-size="Small" data-extra="0" onclick="selectSize(this,'cola-sizes')">Small</button>
+						<button class="size-btn" data-size="Large" data-extra="1" onclick="selectSize(this,'cola-sizes')">Large (+$1)</button>
+					</div>
+				</div>
+				<div class="option-section">
+					<div class="option-section-label">Quantity</div>
+					<div class="qty-row">
+						<button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+						<span class="qty-display">1</span>
+						<button class="qty-btn" onclick="changeQty(this,1)">+</button>
+					</div>
+				</div>
+				<button class="add-btn" onclick="addDrink(this,'CocaCola',3)">+ Add to Order</button>
+			</div>
+		</div>
+
+	</div><!-- /menu drinks -->
+
+	<!-- CART -->
+	<div class="cart">
+		<h3>🛒 Your Order</h3>
+		<ul id="cart-list"></ul>
+		<p class="cart-total">Total: <span>$<span id="total">0</span></span></p>
+		<button class="checkout-btn" onclick="checkout()">✔ Confirm Order</button>
+	</div>
+</div><!-- /container -->
+
+<script>
+let total = 0;
+// FIX: track cart items as an array so checkout sends correct data
+let cartItems = [];
+
+/* ── Size selector ── */
+function selectSize(btn, groupId) {
+	document.querySelectorAll('#' + groupId + ' .size-btn').forEach(b => b.classList.remove('selected'));
+	btn.classList.add('selected');
+}
+
+/* ── Qty ── */
+function changeQty(btn, delta) {
+	const display = btn.parentElement.querySelector('.qty-display');
+	let val = parseInt(display.textContent) + delta;
+	if (val < 1) val = 1;
+	if (val > 10) val = 10;
+	display.textContent = val;
+}
+
+/* ── Food (döner/saurma) ── */
+function addFood(button, name, basePrice) {
+	const card = button.closest('.card');
+	const checks = card.querySelectorAll('input[type="checkbox"]:checked');
+	const extras = Array.from(checks).map(c => c.value);
+	const selectedSize = card.querySelector('.size-btn.selected');
+	const sizeName  = selectedSize.dataset.size;
+	const sizeExtra = parseInt(selectedSize.dataset.extra);
+	const qty = parseInt(card.querySelector('.qty-display').textContent);
+	const unitPrice = basePrice + sizeExtra;
+	const lineTotal = unitPrice * qty;
+
+	let label = name;
+	const details = [];
+	if (sizeName !== 'Regular') details.push(sizeName);
+	if (extras.length) details.push(extras.join(', '));
+	if (qty > 1) details.push('x' + qty);
+	if (details.length) label += ' (' + details.join(' · ') + ')';
+
+	addToCart(label, lineTotal);
+}
+
+/* ── Drink ── */
+function addDrink(button, name, basePrice) {
+	const card = button.closest('.card');
+	const selectedSize = card.querySelector('.size-btn.selected');
+	const sizeName  = selectedSize.dataset.size;
+	const sizeExtra = parseInt(selectedSize.dataset.extra);
+	const qty = parseInt(card.querySelector('.qty-display').textContent);
+	const unitPrice = basePrice + sizeExtra;
+	const lineTotal = unitPrice * qty;
+
+	let label = name;
+	const details = [];
+	if (sizeName !== 'Small') details.push(sizeName);
+	if (qty > 1) details.push('x' + qty);
+	if (details.length) label += ' (' + details.join(' · ') + ')';
+
+	addToCart(label, lineTotal);
+}
+
+/* ── Shared cart ── */
+function addToCart(label, price) {
+	const list = document.getElementById('cart-list');
+	const item = document.createElement('li');
+	item.textContent = label + ' — $' + price;
+
+	// FIX: track item in cartItems array
+	cartItems.push(label + ' — $' + price);
+
+	const delBtn = document.createElement('button');
+	delBtn.textContent = 'Remove';
+	delBtn.onclick = function () {
+		item.style.animation = 'slideOut 0.25s ease forwards';
+		setTimeout(() => {
+			// FIX: remove from cartItems array on delete
+			const idx = cartItems.indexOf(label + ' — $' + price);
+			if (idx > -1) cartItems.splice(idx, 1);
+			list.removeChild(item);
+			total -= price;
+			document.getElementById('total').textContent = total;
+		}, 240);
+	};
+
+	item.appendChild(delBtn);
+	list.appendChild(item);
+	total += price;
+	document.getElementById('total').textContent = total;
+}
+
+/* ── Checkout: saves to localStorage then redirects ── */
+function checkout() {
+	if (total === 0) { alert('Cart is empty!'); return; }
+	// FIX: use cartItems array (not re-reading DOM which includes the Remove button text)
+	localStorage.setItem('orderData', JSON.stringify({ items: cartItems, total: total }));
+	window.location.href = '/orderpage';
+}
+
+/* ── History panel ── */
+function openHistory() {
+	document.getElementById('sidePanel').classList.add('active');
+	document.getElementById('panelOverlay').classList.add('active');
+	loadOrders();
+}
+
+function closeHistory() {
+	document.getElementById('sidePanel').classList.remove('active');
+	document.getElementById('panelOverlay').classList.remove('active');
+}
+
+/* ── Load orders for the logged-in user ── */
+function loadOrders() {
+	const user_id = localStorage.getItem('user_id');
+
+	if (!user_id) {
+		document.getElementById('orderList').innerHTML = `
+			<li style="background:transparent;border:1px dashed #333;text-align:center;padding:30px 16px;color:#555;">
+				User not logged in
+			</li>`;
+		return;
+	}
+
+	fetch('/get-orders/' + user_id)
+	.then(res => res.json())
+	.then(data => {
+		const list = document.getElementById('orderList');
+		list.innerHTML = '';
+
+		if (!data || data.length === 0) {
+			list.innerHTML = `<li style="background:transparent;border:1px dashed #333;text-align:center;padding:30px 16px;color:#555;">
+				No past orders yet
+			</li>`;
+			return;
+		}
+
+		data.forEach((order, i) => {
+			const items = Array.isArray(order[0]) ? order[0].join('<br>') : order[0];
+			const orderTotal = order[1];
+
+			const li = document.createElement('li');
+			li.innerHTML = `
+				<div class="order-meta">Order #${i + 1}</div>
+				<div class="order-items">${items}</div>
+				<div class="order-total">Total: $${orderTotal}</div>
+			`;
+			list.appendChild(li);
+		});
+	})
+	.catch(() => {
+		document.getElementById('orderList').innerHTML = `
+			<li style="background:transparent;border:1px dashed #333;text-align:center;padding:30px 16px;color:#555;">
+				Could not load orders
+			</li>`;
+	});
+}
+
+/* ── Clear all orders (only for this user) ── */
+function clearAllOrders() {
+	if (!confirm('Clear all order history? This cannot be undone.')) return;
+	const user_id = localStorage.getItem('user_id');
+	// FIX: send user_id so server only deletes this user's orders
+	fetch('/delete-all-orders', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ user_id: user_id })
+	})
+	.then(res => res.json())
+	.then(() => loadOrders())
+	.catch(() => loadOrders());
+}
+</script>
+
+@keyframes slideOut {
+	to { transform: translateX(30px); opacity: 0; }
+}
+
+</body>
+</html>
